@@ -8,6 +8,7 @@ import ro.asis.client.service.model.entity.ClientAccountEntity
 import ro.asis.client.service.model.entity.ClientEntity
 import ro.asis.client.service.repository.ClientDao
 import ro.asis.client.service.repository.ClientRepository
+import ro.asis.client.service.service.validator.ClientValidator
 import ro.asis.commons.exceptions.ResourceNotFoundException
 import ro.asis.commons.filters.ClientFilters
 import java.util.*
@@ -17,6 +18,7 @@ class ClientService(
     private val dao: ClientDao,
     private val mapper: ObjectMapper,
     private val repository: ClientRepository,
+    private val validator: ClientValidator,
     private val clientAccountService: ClientAccountService
 ) {
     companion object {
@@ -32,18 +34,27 @@ class ClientService(
         return clientAccountService.findClientAccountByClient(client)
     }
 
-    fun addClient(client: ClientEntity): ClientEntity = repository.save(client)
+    fun addClient(client: ClientEntity): ClientEntity {
+        validator.validateNewOrThrow(client)
+        return repository.save(client)
+    }
 
     fun deleteClient(clientId: String): Optional<ClientEntity> {
+        validator.validateExistsOrThrow(clientId)
         val clientToDelete = repository.findById(clientId)
         clientToDelete.ifPresent { deleteExistingClient(it) }
         return clientToDelete
     }
 
     fun patchClient(clientId: String, patch: JsonPatch): ClientEntity {
+        validator.validateExistsOrThrow(clientId)
+
         val dbClient = getOrThrow(clientId)
         val patchedClientJson = patch.apply(mapper.valueToTree(dbClient))
         val patchedClient = mapper.treeToValue(patchedClientJson, ClientEntity::class.java)
+
+        validator.validateReplaceOrThrow(clientId, patchedClient)
+
         copyClient(patchedClient, dbClient)
         return repository.save(dbClient)
     }
