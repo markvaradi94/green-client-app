@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component
 import ro.asis.account.client.AccountApiClient
 import ro.asis.client.service.model.entity.ClientEntity
 import ro.asis.client.service.repository.ClientRepository
+import ro.asis.commons.exceptions.ValidationException
 import ro.asis.commons.model.Address
 import java.util.*
 import java.util.Optional.empty
 import java.util.Optional.of
-import javax.validation.ValidationException
 
 @Component
 class ClientValidator(
