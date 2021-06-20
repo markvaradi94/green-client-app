@@ -19,6 +19,12 @@
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <testcontainers.version>1.15.3</testcontainers.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>ro.asis</groupId>
@@ -44,6 +50,11 @@
             <groupId>com.github.fge</groupId>
             <artifactId>json-patch</artifactId>
             <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Cloudmersive</groupId>
+            <artifactId>Cloudmersive.APIClient.Java</artifactId>
+            <version>v3.54</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

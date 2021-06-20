@@ -5,15 +5,27 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import ro.asis.commons.model.Address
 import ro.asis.commons.model.Cart
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 @Document(collection = "clients")
 class ClientEntity(
     @Id
     var id: String? = ObjectId.get().toHexString(),
 
+    @NotNull
+    @NotBlank
     var accountId: String,
+
+    @NotNull
+    @NotBlank
     var firstName: String,
+
+    @NotNull
+    @NotBlank
     var lastName: String,
-    var address: Address = Address(),
-    var cart: Cart = Cart()
+
+    var address: Address,
+
+    var cart: Cart
 )
