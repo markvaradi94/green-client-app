@@ -22,21 +22,24 @@ class ClientValidator(
 
     fun validateReplaceOrThrow(clientId: String, newClient: ClientEntity) =
         exists(clientId)
-            .or { validate(client = newClient) }
+            .or { validate(client = newClient, newEntity = false) }
             .ifPresent { throw it }
 
     fun validateNewOrThrow(client: ClientEntity) =
-        validate(client = client).ifPresent { throw it }
+        validate(client = client, newEntity = true).ifPresent { throw it }
 
     fun validateExistsOrThrow(clientId: String) = exists(clientId).ifPresent { throw it }
 
-    private fun validate(client: ClientEntity): Optional<ValidationException> {
-        accountAlreadyIsInUseOrDoesNotExist(client).ifPresent { throw it }
-        simpleAddressValidation(client.address).ifPresent { throw it }
+    private fun validate(client: ClientEntity, newEntity: Boolean): Optional<ValidationException> {
+        if (newEntity) {
+            accountAlreadyIsInUseOrDoesNotExist(client).ifPresent { throw it }
+        }
+        accountDoesNotExist(client).ifPresent { throw it }
+        addressIsInvalid(client.address).ifPresent { throw it }
         return empty()
     }
 
-    private fun simpleAddressValidation(address: Address): Optional<ValidationException> {
+    private fun addressIsInvalid(address: Address): Optional<ValidationException> {
         return when (true) {
             address.city.isBlank() -> of(ValidationException("City must be valid"))
             address.streetName.isBlank() -> of(ValidationException("Street name must be valid"))
@@ -46,8 +49,13 @@ class ClientValidator(
         }
     }
 
+    private fun accountDoesNotExist(client: ClientEntity): Optional<ValidationException> {
+        return if (!accountExists(client.accountId)) of(ValidationException("Client cannot be registered with a non-existent account"))
+        else empty()
+    }
+
     private fun accountAlreadyIsInUseOrDoesNotExist(client: ClientEntity): Optional<ValidationException> {
-        return if (!accountExists(client.accountId)) of(ValidationException("Client cannot be registered with an account"))
+        return if (!accountExists(client.accountId)) of(ValidationException("Client cannot be registered with a non-existent account"))
         else if (clientWithAccountExists(client.accountId)) of(ValidationException("There is already a client registered for this account"))
         else empty()
     }

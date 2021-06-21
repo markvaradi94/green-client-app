@@ -30,6 +30,45 @@ class ClientAccountService(
         )
     }
 
+    fun createClientAccountForNewClient(clientId: String, accountId: String): ClientAccountEntity {
+        val account = accountApiClient.getAccount(accountId)
+            .orElseThrow { ResourceNotFoundException("Could not find account with id $accountId") }
+        val client = clientApiClient.getClient(clientId)
+            .orElseThrow { ResourceNotFoundException("Could not find client with id $clientId") }
+
+        val newClientAccount = ClientAccountEntity(
+            clientId = client.id!!,
+            accountId = account.id!!,
+            username = account.username,
+            email = account.email,
+            phoneNumber = account.phoneNumber
+        )
+
+        return repository.save(newClientAccount)
+    }
+
+    fun editForAccountChange(accountId: String, editedAccount: Account): ClientAccountEntity {
+        val clientAccount = findClientAccountByAccountId(accountId)
+        clientAccount.email = editedAccount.email
+        clientAccount.phoneNumber = editedAccount.phoneNumber
+        clientAccount.username = editedAccount.username
+        return repository.save(clientAccount)
+    }
+
+    fun editForClientChange(clientId: String, editedClient: Client): ClientAccountEntity {
+        val clientAccount = findClientAccountByClientId(clientId)
+        editedClient.firstName
+        editedClient.lastName
+        //TODO rethink if we need to add any specific client details to client_account
+        return clientAccount
+    }
+
+    fun deleteForClient(clientId: String): ClientAccountEntity {
+        val clientAccountToDelete = findClientAccountByClientId(clientId)
+        repository.delete(clientAccountToDelete)
+        return clientAccountToDelete
+    }
+
     fun findClientAccountByClientId(clientId: String): ClientAccountEntity =
         repository.findByClientId(clientId)
             .orElseThrow { ResourceNotFoundException("Could not find client account for client with id $clientId") }
