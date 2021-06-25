@@ -26,7 +26,8 @@ class ClientValidator(
             .ifPresent { throw it }
 
     fun validateNewOrThrow(client: ClientEntity) =
-        validate(client = client, newEntity = true).ifPresent { throw it }
+        validate(client = client, newEntity = true)
+            .ifPresent { throw it }
 
     fun validateExistsOrThrow(clientId: String) = exists(clientId).ifPresent { throw it }
 
@@ -84,11 +85,6 @@ class ClientValidator(
         input.streetAddress = "${address.streetName} ${address.streetNumber}"
 
         val result = apiInstance.addressValidateAddress(input)
-
-        println(input)
-        println("BORAT")
-        println("result for address validation is: $result")
-        println("BORAT")
 
         return if (result.isValidAddress) empty()
         else of(ValidationException("Address is invalid"))

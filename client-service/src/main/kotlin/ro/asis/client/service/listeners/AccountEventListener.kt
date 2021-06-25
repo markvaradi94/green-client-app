@@ -10,8 +10,7 @@ import ro.asis.client.service.model.entity.ClientEntity
 import ro.asis.client.service.service.ClientAccountService
 import ro.asis.client.service.service.ClientService
 import ro.asis.commons.enums.AccountType.CLIENT
-import ro.asis.commons.enums.EventType.CREATED
-import ro.asis.commons.enums.EventType.DELETED
+import ro.asis.commons.enums.EventType.*
 
 @Component
 class AccountEventListener(
@@ -46,8 +45,10 @@ class AccountEventListener(
     }
 
     private fun callClientEditForAccount(event: AccountEditEvent) {
-        LOG.info("Account was edited for account with id ${event.accountId}")
-        LOG.info("$event")
-        clientAccountService.editForAccountChange(event.accountId, event.editedAccount)
+        if (event.accountType == CLIENT && event.eventType == MODIFIED) {
+            LOG.info("Client account was edited for account with id ${event.accountId}")
+            LOG.info("$event")
+            clientAccountService.editForAccountChange(event.accountId, event.editedAccount)
+        }
     }
 }
