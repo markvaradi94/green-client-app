@@ -3,14 +3,14 @@ package ro.asis.client.events
 import com.fasterxml.jackson.annotation.JsonProperty
 import ro.asis.client.dto.Client
 import ro.asis.commons.enums.EventType
-import ro.asis.commons.enums.EventType.MODIFIED
+import ro.asis.commons.enums.EventType.MODIFY
 
-class ClientEditEvent(
+class ClientModifiedEvent(
     @JsonProperty("clientId")
     val clientId: String,
 
     @JsonProperty("eventType")
-    val eventType: EventType = MODIFIED,
+    val eventType: EventType = MODIFY,
 
     @JsonProperty("editedClient")
     val editedClient: Client

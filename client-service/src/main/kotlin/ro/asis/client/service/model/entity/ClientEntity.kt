@@ -11,21 +11,11 @@ import javax.validation.constraints.NotNull
 @Document(collection = "clients")
 class ClientEntity(
     @Id
-    var id: String? = ObjectId.get().toHexString(),
+    var id: String = ObjectId.get().toHexString(),
 
-    @NotNull
-    @NotBlank
     var accountId: String,
-
-    @NotNull
-    @NotBlank
     var firstName: String,
-
-    @NotNull
-    @NotBlank
     var lastName: String,
-
     var address: Address,
-
     var cart: Cart
 )

@@ -21,8 +21,8 @@ class ClientAccountService(
             .orElseThrow { ResourceNotFoundException("Could not find account with id ${client.accountId}") }
         return repository.save(
             ClientAccountEntity(
-                clientId = client.id!!,
-                accountId = account.id!!,
+                clientId = client.id,
+                accountId = account.id,
                 username = account.username,
                 email = account.email,
                 phoneNumber = account.phoneNumber
@@ -37,8 +37,8 @@ class ClientAccountService(
             .orElseThrow { ResourceNotFoundException("Could not find client with id $clientId") }
 
         val newClientAccount = ClientAccountEntity(
-            clientId = client.id!!,
-            accountId = account.id!!,
+            clientId = client.id,
+            accountId = account.id,
             username = account.username,
             email = account.email,
             phoneNumber = account.phoneNumber
@@ -78,7 +78,7 @@ class ClientAccountService(
             .orElseThrow { ResourceNotFoundException("Could not find client account for account with id $accountId") }
 
     fun findClientAccountByClient(client: ClientEntity): ClientAccountEntity =
-        repository.findByClientId(client.id!!)
+        repository.findByClientId(client.id)
             .orElseThrow { ResourceNotFoundException("Could not find client account for client with id ${client.id}") }
 
     fun findClientForClientAccount(clientAccount: ClientAccountEntity): Client =

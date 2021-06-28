@@ -71,20 +71,16 @@ class ClientService(
 
         val newClient = ClientEntity(
             accountId = accountId,
-            firstName = "new",
-            lastName = "client",
-            address = Address(
-                city = "new city",
-                streetName = "new street",
-                streetNumber = "new number"
-            ),
+            firstName = "",
+            lastName = "",
+            address = Address(),
             cart = Cart()
         )
 
         val dbClient = repository.save(newClient)
         notificationsService.notifyClientCreated(dbClient)
 
-        return dbClient;
+        return dbClient
     }
 
     fun deleteClientForAccount(accountId: String): ClientEntity {
