@@ -23,7 +23,6 @@ class ClientAccountService(
             ClientAccountEntity(
                 clientId = client.id,
                 accountId = account.id,
-                username = account.username,
                 email = account.email,
                 phoneNumber = account.phoneNumber
             )
@@ -39,7 +38,6 @@ class ClientAccountService(
         val newClientAccount = ClientAccountEntity(
             clientId = client.id,
             accountId = account.id,
-            username = account.username,
             email = account.email,
             phoneNumber = account.phoneNumber
         )
@@ -51,7 +49,6 @@ class ClientAccountService(
         val clientAccount = findClientAccountByAccountId(accountId)
         clientAccount.email = editedAccount.email
         clientAccount.phoneNumber = editedAccount.phoneNumber
-        clientAccount.username = editedAccount.username
         return repository.save(clientAccount)
     }
 

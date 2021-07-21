@@ -17,9 +17,6 @@ data class ClientAccount(
     @JsonProperty("name")
     var name: String,
 
-    @JsonProperty("username")
-    var username: String,
-
     @JsonProperty("email")
     var email: String,
 

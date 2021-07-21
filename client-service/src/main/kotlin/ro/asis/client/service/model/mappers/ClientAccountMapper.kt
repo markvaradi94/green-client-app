@@ -17,7 +17,6 @@ class ClientAccountMapper(
         return ClientAccount(
             id = source.id,
             name = "${client.firstName} ${client.lastName}",
-            username = source.username,
             email = source.email,
             phoneNumber = account.phoneNumber,
             type = account.type,
@@ -31,7 +30,6 @@ class ClientAccountMapper(
             id = source.id,
             clientId = source.clientId,
             accountId = source.accountId,
-            username = source.username,
             email = source.email,
             phoneNumber = source.phoneNumber
         )

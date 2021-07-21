@@ -11,7 +11,6 @@ class ClientAccountEntity(
 
     var clientId: String,
     var accountId: String,
-    var username: String,
     var email: String,
     var phoneNumber: String
 )
